@@ -1,22 +1,16 @@
 <svg width="1600" height="600" viewBox="0 0 1600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1600" height="600" fill="#0A8DFF"/>
+  <rect width="1600" height="600" fill="#0A8DFF" />
 
-  <g transform="translate(140, 90)">
-    <path d="M240 140C240 60 312 0 390 0C468 0 540 60 540 140V180H500V140C500 88 456 46 390 46C324 46 280 88 280 140V180H240V140Z" fill="white"/>
-    <path d="M286 180H494V304C494 376 440 430 390 430C340 430 286 376 286 304V180Z" fill="white"/>
-    <path d="M370 240H410V298C410 318 398 332 390 332C382 332 370 318 370 298V240Z" fill="#0A8DFF"/>
+  <g transform="translate(130 70)">
+    <!-- Cadeado -->
+    <path d="M220 205V150C220 72 278 18 350 18C422 18 480 72 480 150V205H442V150C442 95 404 58 350 58C296 58 258 95 258 150V205H220Z" fill="white"/>
+    <path d="M220 205H510V360C510 436 455 490 380 490H320C245 490 190 436 190 360V205H220ZM278 205H452V360C452 400 420 432 380 432H320C280 432 248 400 248 360V205H278Z" fill="white"/>
+    <circle cx="350" cy="290" r="38" fill="#0A8DFF"/>
+    <rect x="337" y="290" width="26" height="66" rx="13" fill="#0A8DFF"/>
 
-    <g transform="translate(600, 0)">
-      <path d="M0 120L110 0H190L82 120H0Z" fill="white"/>
-      <path d="M120 120L230 0H310L200 120H120Z" fill="white"/>
-      <path d="M170 120L278 0H358L250 120H170Z" fill="white"/>
-      <path d="M260 120L430 0H510L340 120H260Z" fill="white"/>
-      <path d="M1 120H496V176H1V120Z" fill="white"/>
-      <path d="M76 200H290V260H76V200Z" fill="white"/>
-      <path d="M352 200H552V260H352V200Z" fill="white"/>
-      <path d="M82 120H240L156 200H0L82 120Z" fill="#0A8DFF"/>
-      <path d="M252 120H420L334 200H166L252 120Z" fill="#0A8DFF"/>
-      <path d="M358 120H552L470 200H274L358 120Z" fill="#0A8DFF"/>
+    <!-- Texto -->
+    <g transform="translate(610 0)">
+      <text x="0" y="315" fill="white" font-family="Arial Black, Impact, sans-serif" font-size="290" font-weight="900" letter-spacing="-18">2AN</text>
     </g>
   </g>
 </svg>
