@@ -1,16 +1,27 @@
 <svg width="1600" height="600" viewBox="0 0 1600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1600" height="600" fill="#0A8DFF" />
+  <rect width="1600" height="600" fill="#0A8DFF"/>
 
-  <g transform="translate(130 70)">
+  <g transform="translate(120 70)">
     <!-- Cadeado -->
-    <path d="M220 205V150C220 72 278 18 350 18C422 18 480 72 480 150V205H442V150C442 95 404 58 350 58C296 58 258 95 258 150V205H220Z" fill="white"/>
-    <path d="M220 205H510V360C510 436 455 490 380 490H320C245 490 190 436 190 360V205H220ZM278 205H452V360C452 400 420 432 380 432H320C280 432 248 400 248 360V205H278Z" fill="white"/>
-    <circle cx="350" cy="290" r="38" fill="#0A8DFF"/>
-    <rect x="337" y="290" width="26" height="66" rx="13" fill="#0A8DFF"/>
+    <path d="M200 180V112C200 38 260 -18 334 -18C408 -18 468 38 468 112V180H420V112C420 67 384 30 334 30C284 30 248 67 248 112V180H200Z" fill="white"/>
+    <path d="M182 180H486V340C486 433 417 510 334 510C251 510 182 433 182 340V180Z" fill="white"/>
+    <path d="M246 180H422V340C422 392 385 430 334 430C283 430 246 392 246 340V180Z" fill="#0A8DFF"/>
+    <circle cx="334" cy="285" r="36" fill="white"/>
+    <rect x="318" y="285" width="32" height="74" rx="16" fill="white"/>
 
-    <!-- Texto -->
-    <g transform="translate(610 0)">
-      <text x="0" y="315" fill="white" font-family="Arial Black, Impact, sans-serif" font-size="290" font-weight="900" letter-spacing="-18">2AN</text>
+    <!-- Texto 2AN -->
+    <g transform="translate(560 0)">
+      <path d="M84 184H34V346H84V184Z" fill="white"/>
+      <path d="M94 180L220 52H304L180 180H94Z" fill="white"/>
+      <path d="M162 180H300V346H162V180Z" fill="white"/>
+      <path d="M282 184H240V346H282V184Z" fill="white"/>
+      <path d="M344 180H416L506 286V346H454V296L392 228H344V180Z" fill="white"/>
+      <path d="M452 180H626L698 258V346H646V276L580 208H452V180Z" fill="white"/>
+      <path d="M654 180H786V346H654V180Z" fill="white"/>
+      <path d="M718 180H854L930 266L854 346H718L792 266L718 180Z" fill="white"/>
+      <path d="M740 180H806L856 230H794L740 180Z" fill="#0A8DFF"/>
+      <path d="M782 180H870L928 238L870 298H782L836 238L782 180Z" fill="#0A8DFF"/>
+      <path d="M816 180H918L964 226L918 272H816L858 226L816 180Z" fill="#0A8DFF"/>
     </g>
   </g>
 </svg>
