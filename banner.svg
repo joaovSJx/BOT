@@ -1,27 +1,35 @@
-<svg width="1600" height="600" viewBox="0 0 1600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="1600" height="600" viewBox="0 0 1600 600" xmlns="http://www.w3.org/2000/svg">
   <rect width="1600" height="600" fill="#0A8DFF"/>
 
-  <g transform="translate(120 70)">
-    <!-- Cadeado -->
-    <path d="M200 180V112C200 38 260 -18 334 -18C408 -18 468 38 468 112V180H420V112C420 67 384 30 334 30C284 30 248 67 248 112V180H200Z" fill="white"/>
-    <path d="M182 180H486V340C486 433 417 510 334 510C251 510 182 433 182 340V180Z" fill="white"/>
-    <path d="M246 180H422V340C422 392 385 430 334 430C283 430 246 392 246 340V180Z" fill="#0A8DFF"/>
-    <circle cx="334" cy="285" r="36" fill="white"/>
-    <rect x="318" y="285" width="32" height="74" rx="16" fill="white"/>
+  <g transform="translate(105 25)">
+    <!-- fundo do círculo -->
+    <circle cx="620" cy="275" r="320" fill="#061C2F"/>
 
-    <!-- Texto 2AN -->
-    <g transform="translate(560 0)">
-      <path d="M84 184H34V346H84V184Z" fill="white"/>
-      <path d="M94 180L220 52H304L180 180H94Z" fill="white"/>
-      <path d="M162 180H300V346H162V180Z" fill="white"/>
-      <path d="M282 184H240V346H282V184Z" fill="white"/>
-      <path d="M344 180H416L506 286V346H454V296L392 228H344V180Z" fill="white"/>
-      <path d="M452 180H626L698 258V346H646V276L580 208H452V180Z" fill="white"/>
-      <path d="M654 180H786V346H654V180Z" fill="white"/>
-      <path d="M718 180H854L930 266L854 346H718L792 266L718 180Z" fill="white"/>
-      <path d="M740 180H806L856 230H794L740 180Z" fill="#0A8DFF"/>
-      <path d="M782 180H870L928 238L870 298H782L836 238L782 180Z" fill="#0A8DFF"/>
-      <path d="M816 180H918L964 226L918 272H816L858 226L816 180Z" fill="#0A8DFF"/>
+    <!-- topo do cadeado -->
+    <path d="M470 200C470 120 532 76 620 76C708 76 770 120 770 200V250H724V200C724 149 684 116 620 116C556 116 516 149 516 200V250H470V200Z" fill="#0A8DFF"/>
+
+    <!-- corpo do cadeado -->
+    <path d="M470 250H770V420C770 510 703 575 620 575C537 575 470 510 470 420V250Z" fill="#0A8DFF"/>
+
+    <!-- faixa interna do cadeado -->
+    <path d="M530 250H710V420C710 468 675 505 620 505C565 505 530 468 530 420V250Z" fill="#061C2F"/>
+
+    <!-- pequeno encaixe central -->
+    <circle cx="620" cy="338" r="36" fill="#0A8DFF"/>
+    <rect x="602" y="338" width="36" height="90" rx="18" fill="#0A8DFF"/>
+
+    <!-- 2AN -->
+    <g transform="translate(820 0)">
+      <path d="M40 150H0V430H40V150Z" fill="#0A8DFF"/>
+      <path d="M84 146L214 16H280L154 146H84Z" fill="#0A8DFF"/>
+      <path d="M122 146H279V430H122V146Z" fill="#0A8DFF"/>
+      <path d="M204 146H320L402 238V430H360V268L292 198H204V146Z" fill="#0A8DFF"/>
+      <path d="M335 146H483L571 228V430H529V264L470 206H335V146Z" fill="#0A8DFF"/>
+      <path d="M537 146H680V430H537V146Z" fill="#0A8DFF"/>
+      <path d="M617 146H757L850 238L757 430H617L699 238L617 146Z" fill="#0A8DFF"/>
+      <path d="M623 146H693L744 196H680L623 146Z" fill="#061C2F"/>
+      <path d="M754 146H840L894 200L840 254H754L802 200L754 146Z" fill="#061C2F"/>
+      <path d="M803 146H900L962 205L900 264H803L850 205L803 146Z" fill="#061C2F"/>
     </g>
   </g>
 </svg>
