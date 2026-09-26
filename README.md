@@ -1,7 +1,7 @@
 # Bot de Controle de Ponto
 
 <p align="center">
-  <img src="banner.svg" alt="Banner do Bot de Controle de Ponto" width="100%" />
+  <img src="https://i.imgur.com/6Xn1rSf.png" alt="Logo do projeto" width="100%" />
 </p>
 
 Um bot para Discord desenvolvido para registrar marcações de ponto de forma simples, organizada e persistente. Ele permite que cada usuário inicie e finalize seu ponto por meio de botões interativos, com relatório automático de horas trabalhadas.
