@@ -16,6 +16,8 @@ INSTAGRAM_VERIFY_CHANNEL_ID = int(
     os.getenv("INSTAGRAM_VERIFY_CHANNEL_ID", "1549904027167236266")
 )
 SUPPORT_CHANNEL_ID = int(os.getenv("CANAL_SUPORTE_ID", "1548207347753689098"))
+SUPPORT_IMAGE_PATH = Path(__file__).parent / "assets" / "SUPORTE.png"
+DENUNCIE_IMAGE_PATH = Path(__file__).parent / "assets" / "DENUNCIE.png"
 COUNTER_FILE = Path(__file__).parent / "ticket-counter.json"
 # ===================================================
 
@@ -51,7 +53,7 @@ def possui_botao_instagram(component) -> bool:
 
 
 def support_panel_embed() -> discord.Embed:
-    return discord.Embed(
+    embed = discord.Embed(
         title="Central de suporte",
         description=(
             "Precisa de ajuda ou deseja fazer parte da nossa equipe?\n\n"
@@ -63,6 +65,9 @@ def support_panel_embed() -> discord.Embed:
         ),
         color=COR,
     )
+    if SUPPORT_IMAGE_PATH.is_file():
+        embed.set_image(url="attachment://SUPORTE.png")
+    return embed
 
 
 async def create_support_ticket(
@@ -426,9 +431,27 @@ class Tickets(commands.Cog):
                     )
                     for row in message.components
                 ):
-                    await message.edit(embed=support_panel_embed(), view=SupportView())
+                    if SUPPORT_IMAGE_PATH.is_file():
+                        await message.edit(
+                            embed=support_panel_embed(),
+                            view=SupportView(),
+                            attachments=[
+                                discord.File(SUPPORT_IMAGE_PATH, filename="SUPORTE.png")
+                            ],
+                        )
+                    else:
+                        await message.edit(
+                            embed=support_panel_embed(), view=SupportView(), attachments=[]
+                        )
                     return
-            await channel.send(embed=support_panel_embed(), view=SupportView())
+            if SUPPORT_IMAGE_PATH.is_file():
+                await channel.send(
+                    embed=support_panel_embed(),
+                    view=SupportView(),
+                    file=discord.File(SUPPORT_IMAGE_PATH, filename="SUPORTE.png"),
+                )
+            else:
+                await channel.send(embed=support_panel_embed(), view=SupportView())
         except discord.Forbidden:
             print("[tickets] Sem permissão para ler o histórico ou enviar o painel de suporte.")
         except discord.HTTPException as error:
@@ -460,7 +483,15 @@ class Tickets(commands.Cog):
             ),
             color=COR,
         )
-        await interaction.channel.send(embed=embed, view=OpenView())
+        if DENUNCIE_IMAGE_PATH.is_file():
+            embed.set_image(url="attachment://DENUNCIE.png")
+            await interaction.channel.send(
+                embed=embed,
+                view=OpenView(),
+                file=discord.File(DENUNCIE_IMAGE_PATH, filename="DENUNCIE.png"),
+            )
+        else:
+            await interaction.channel.send(embed=embed, view=OpenView())
         await interaction.response.send_message("Painel enviado!", ephemeral=True)
 
 

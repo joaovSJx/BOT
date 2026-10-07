@@ -50,6 +50,7 @@ CATEGORY_ID = int(os.getenv("TICKET_CATEGORY_ID", "0"))
 
 ARQUIVO_DADOS = "pontos.json"
 ARQUIVO_IMAGEM_DESMUTE = os.path.join(os.path.dirname(__file__), "assets", "desmutar.png")
+ARQUIVO_IMAGEM_DENUNCIE = os.path.join(os.path.dirname(__file__), "assets", "DENUNCIE.png")
 FUSO_BRASILIA = timezone(timedelta(hours=-3), name="BRT")
 
 # ========================= PERSISTÊNCIA =========================
@@ -520,6 +521,9 @@ async def garantir_painel_denuncias():
         ),
         color=discord.Color.from_rgb(43, 45, 49),
     )
+    imagem_disponivel = os.path.isfile(ARQUIVO_IMAGEM_DENUNCIE)
+    if imagem_disponivel:
+        embed.set_image(url="attachment://DENUNCIE.png")
 
     try:
         async for mensagem in canal.history(limit=100):
@@ -528,10 +532,26 @@ async def garantir_painel_denuncias():
                 and mensagem.embeds
                 and mensagem.embeds[0].title == embed.title
             ):
-                await mensagem.edit(embed=embed, view=OpenView())
+                if imagem_disponivel:
+                    await mensagem.edit(
+                        embed=embed,
+                        view=OpenView(),
+                        attachments=[
+                            discord.File(ARQUIVO_IMAGEM_DENUNCIE, filename="DENUNCIE.png")
+                        ],
+                    )
+                else:
+                    await mensagem.edit(embed=embed, view=OpenView(), attachments=[])
                 return
 
-        await canal.send(embed=embed, view=OpenView())
+        if imagem_disponivel:
+            await canal.send(
+                embed=embed,
+                view=OpenView(),
+                file=discord.File(ARQUIVO_IMAGEM_DENUNCIE, filename="DENUNCIE.png"),
+            )
+        else:
+            await canal.send(embed=embed, view=OpenView())
     except discord.Forbidden:
         print("❌ Sem permissão para enviar mensagens no canal de denúncias.")
     except discord.HTTPException as erro:

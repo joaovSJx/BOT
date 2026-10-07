@@ -160,7 +160,14 @@ Após iniciar, o bot cria ou atualiza o painel no canal de verificação e regis
 ```text
 .
 ├── assets/
-│   └── banner.jpg
+│   ├── Avisos.png
+│   ├── DENUNCIE.png
+│   ├── Regras.png
+│   ├── SUPORTE.png
+│   ├── THE_BOX.gif
+│   ├── banner.jpg
+│   ├── desmutar.png
+│   └── guia.png
 ├── bot.py
 ├── pontos.json
 ├── verification.py
