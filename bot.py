@@ -49,7 +49,7 @@ LOG_CHANNEL_ID = int(os.getenv("LOG_CHANNEL_ID", "1552722101641814027")) if os.g
 CATEGORY_ID = int(os.getenv("TICKET_CATEGORY_ID", "0"))
 
 ARQUIVO_DADOS = "pontos.json"
-ARQUIVO_GIF_DESMUTE = os.path.join(os.path.dirname(__file__), "assets", "THE_BOX.gif")
+ARQUIVO_IMAGEM_DESMUTE = os.path.join(os.path.dirname(__file__), "assets", "desmutar.png")
 FUSO_BRASILIA = timezone(timedelta(hours=-3), name="BRT")
 
 # ========================= PERSISTÊNCIA =========================
@@ -379,9 +379,9 @@ async def garantir_painel_desmutar():
         ),
         color=discord.Color.from_rgb(128, 128, 128),
     )
-    gif_disponivel = os.path.isfile(ARQUIVO_GIF_DESMUTE)
-    if gif_disponivel:
-        embed.set_image(url="attachment://THE_BOX.gif")
+    imagem_disponivel = os.path.isfile(ARQUIVO_IMAGEM_DESMUTE)
+    if imagem_disponivel:
+        embed.set_image(url="attachment://desmutar.png")
 
     try:
         async for mensagem in canal.history(limit=100):
@@ -390,21 +390,21 @@ async def garantir_painel_desmutar():
                 and mensagem.embeds
                 and mensagem.embeds[0].title == embed.title
             ):
-                if gif_disponivel:
+                if imagem_disponivel:
                     await mensagem.edit(
                         embed=embed,
                         view=DesmutarView(),
-                        attachments=[discord.File(ARQUIVO_GIF_DESMUTE, filename="THE_BOX.gif")],
+                        attachments=[discord.File(ARQUIVO_IMAGEM_DESMUTE, filename="desmutar.png")],
                     )
                 else:
                     await mensagem.edit(embed=embed, view=DesmutarView())
                 return
 
-        if gif_disponivel:
+        if imagem_disponivel:
             await canal.send(
                 embed=embed,
                 view=DesmutarView(),
-                file=discord.File(ARQUIVO_GIF_DESMUTE, filename="THE_BOX.gif"),
+            file=discord.File(ARQUIVO_IMAGEM_DESMUTE, filename="desmutar.png"),
             )
         else:
             await canal.send(embed=embed, view=DesmutarView())
@@ -989,12 +989,12 @@ async def desmutar(ctx: commands.Context):
         ),
         color=discord.Color.from_rgb(128, 128, 128),
     )
-    if os.path.isfile(ARQUIVO_GIF_DESMUTE):
-        embed.set_image(url="attachment://THE_BOX.gif")
+    if os.path.isfile(ARQUIVO_IMAGEM_DESMUTE):
+        embed.set_image(url="attachment://desmutar.png")
         await ctx.send(
             embed=embed,
             view=DesmutarView(),
-            file=discord.File(ARQUIVO_GIF_DESMUTE, filename="THE_BOX.gif"),
+            file=discord.File(ARQUIVO_IMAGEM_DESMUTE, filename="desmutar.png"),
         )
     else:
         await ctx.send(embed=embed, view=DesmutarView())

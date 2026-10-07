@@ -196,7 +196,7 @@ class PanelView(discord.ui.LayoutView):
 
 
 def guide_embed() -> discord.Embed:
-    return discord.Embed(
+    embed = discord.Embed(
         title="Guia do servidor",
         description=(
             "Utilize este guia para acessar rapidamente os canais e áreas disponíveis no servidor.\n\n"
@@ -206,6 +206,10 @@ def guide_embed() -> discord.Embed:
         ),
         colour=ACCENT_COLOR,
     )
+    guide_image_path = os.path.join(os.path.dirname(__file__), "assets", "guia.png")
+    if os.path.isfile(guide_image_path):
+        embed.set_image(url="attachment://guia.png")
+    return embed
 
 
 class GuideSelect(discord.ui.Select):
@@ -367,9 +371,29 @@ class Verification(commands.Cog):
                     possui_menu_guia(component)
                     for component in message.components
                 ):
-                    await message.edit(embed=guide_embed(), view=GuideView())
+                    guide_image_path = os.path.join(
+                        os.path.dirname(__file__), "assets", "guia.png"
+                    )
+                    if os.path.isfile(guide_image_path):
+                        await message.edit(
+                            embed=guide_embed(),
+                            view=GuideView(),
+                            attachments=[discord.File(guide_image_path, filename="guia.png")],
+                        )
+                    else:
+                        await message.edit(embed=guide_embed(), view=GuideView())
                     return
-            await channel.send(embed=guide_embed(), view=GuideView())
+            guide_image_path = os.path.join(
+                os.path.dirname(__file__), "assets", "guia.png"
+            )
+            if os.path.isfile(guide_image_path):
+                await channel.send(
+                    embed=guide_embed(),
+                    view=GuideView(),
+                    file=discord.File(guide_image_path, filename="guia.png"),
+                )
+            else:
+                await channel.send(embed=guide_embed(), view=GuideView())
         except discord.Forbidden:
             print("[guia] Sem permissão para ler o histórico ou enviar o painel.")
         except discord.HTTPException as error:
