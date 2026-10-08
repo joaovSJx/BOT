@@ -269,6 +269,7 @@ class InstagramOpenView(discord.ui.View):
 
     @discord.ui.button(
         label="Verificar",
+        emoji=discord.PartialEmoji(name="emoji_108", id=1554631035093000275),
         style=discord.ButtonStyle.secondary,
         custom_id=ID_OPEN_INSTAGRAM,
     )
