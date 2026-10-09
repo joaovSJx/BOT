@@ -16,6 +16,8 @@ INSTAGRAM_VERIFY_CHANNEL_ID = int(
     os.getenv("INSTAGRAM_VERIFY_CHANNEL_ID", "1549904027167236266")
 )
 SUPPORT_CHANNEL_ID = int(os.getenv("CANAL_SUPORTE_ID", "1548207347753689098"))
+EVENT_CHANNEL_ID = 1555742453791854722
+EVENT_APPLICATION_CHANNEL_ID = 1557914825059860651
 SUPPORT_IMAGE_PATH = Path(__file__).parent / "assets" / "SUPORTE.png"
 DENUNCIE_IMAGE_PATH = Path(__file__).parent / "assets" / "DENUNCIE.png"
 COUNTER_FILE = Path(__file__).parent / "ticket-counter.json"
@@ -24,9 +26,62 @@ COUNTER_FILE = Path(__file__).parent / "ticket-counter.json"
 ID_OPEN = "ticket_open_denuncia"
 ID_OPEN_INSTAGRAM = "ticket_open_instagram"
 ID_OPEN_SUPPORT = "ticket_open_support"
+ID_OPEN_CAMPEONATO = "ticket_open_campeonato"
 ID_APPLY_STAFF = "ticket_apply_staff"
 ID_CLOSE = "ticket_close"
 COR = discord.Color.from_rgb(43, 45, 49)
+
+
+def campeonato_panel_embed() -> discord.Embed:
+    return discord.Embed(
+        title="<:tr_11:1549374249247182971> CAMPEONATO THE BOX",
+        description=(
+            "<:emoji_18:1547470852042530856> <:emoji_14:1547470846237478973> "
+            "<:b_2:1547470823034724444> <:emoji_12:1547470842747818004> "
+            "<:emoji_14:1547470846237478973> <:emoji_25:1548493251449716876>\n"
+            "---\n\n"
+            "### <a:pureza_i:1327091619505246218> "
+            "<:pureza_i:1333172482366242896> REQUISITOS OBRIGATÓRIOS\n"
+            "<:d_seta01:1547470839258157066> Preenchimento completo do formulário oficial.\n"
+            "<:d_seta01:1547470839258157066> Seguir os canais informados do evento.\n"
+            "<:d_seta01:1547470839258157066> Inclusão obrigatória do link do servidor e da etiqueta na bio.\n"
+            "<:d_seta01:1547470839258157066> Constituição prévia de equipes com disponibilidade confirmada.\n"
+            "<:d_seta01:1547470839258157066> Disponibilidade para participação ativa em chamada de voz.\n"
+            "<:d_seta01:1547470839258157066> Manter participação ativa no servidor.\n\n"
+            "---\n\n"
+            "### <a:pureza_i:1327091636085461134> "
+            "<:pureza_i:1333172482366242896> REGULAMENTO E PROIBIÇÕES\n"
+            "<:d_seta01:1547470839258157066> Estritamente proibido o uso de qualquer tipo de trapaça.\n"
+            "<:d_seta01:1547470839258157066> É proibido remover o link do servidor e a etiqueta da bio até ao encerramento do evento.\n"
+            "<:d_seta01:1547470839258157066> É obrigatória a presença no canal de voz no horário estabelecido, mantendo a disciplina de uso do microfone.\n"
+            "<:d_seta01:1547470839258157066> É obrigatória a participação no processo de votação para a seleção dos jogos.\n"
+            "<:d_seta01:1547470839258157066> Não serão permitidas substituições de membros, independentemente da justificativa apresentada.\n\n"
+            "> **AVISO:** O cumprimento de todos os requisitos e regras é indispensável. "
+            "Será realizada uma verificação individual de cada participante previamente ao início do evento.\n\n"
+            "---\n\n"
+            "### <a:pureza_i:1327091661289029685> "
+            "<:pureza_i:1333172482366242896> DINÂMICA DE FUNCIONAMENTO\n"
+            "<:d_seta01:1547470839258157066> O evento será composto por múltiplos minijogos, disputados em formatos individual e em equipe.\n"
+            "<:d_seta01:1547470839258157066> Fase inicial com tabela de pontuação, seguida de uma fase eliminatória por grupos.\n"
+            "<:d_seta01:1547470839258157066> A escolha dos minijogos será definida via votação direta no canal reservado aos participantes.\n"
+            "<:d_seta01:1547470839258157066> O evento contará com transmissão ao vivo e narração oficial.\n\n"
+            "---\n\n"
+            "### <a:pureza_i:1241818474918056102> PREMIAÇÃO FINAL\n"
+            "**R$ 100,00** + **1 Mês de Discord Nitro** para o participante que ganhar MVP.\n\n"
+            "Clique no botão abaixo para abrir seu ticket de inscrição. "
+            "A equipe receberá o link do ticket no canal reservado."
+        ),
+        color=COR,
+    )
+
+
+def possui_botao_campeonato(component) -> bool:
+    if getattr(component, "custom_id", None) == ID_OPEN_CAMPEONATO:
+        return True
+    return any(
+        possui_botao_campeonato(child)
+        for child in getattr(component, "children", ())
+    )
 
 
 def instagram_panel_embed() -> discord.Embed:
@@ -130,13 +185,57 @@ async def create_support_ticket(
         view=CloseView(),
         allowed_mentions=discord.AllowedMentions(users=True, roles=True),
     )
+    notification_sent = True
+    if ticket_type == "campeonato":
+        notification_sent = await notify_event_application(guild, user, channel)
+
+    confirmation = f"Sua solicitação foi criada: {channel.mention}"
+    if not notification_sent:
+        confirmation += (
+            "\n⚠️ O ticket foi criado, mas não consegui avisar o canal da equipe. "
+            "Avise a Staff para que sua inscrição seja vista."
+        )
     await interaction.followup.send(
-        f"Sua solicitação foi criada: {channel.mention}", ephemeral=True
+        confirmation, ephemeral=True
     )
     await send_log(
         guild,
         f"📩 Ticket de {ticket_type} **{channel.name}** aberto por {user.mention} ({user.id})",
     )
+
+
+async def notify_event_application(
+    guild: discord.Guild, user: discord.Member, ticket_channel: discord.TextChannel
+) -> bool:
+    try:
+        target = guild.get_channel(EVENT_APPLICATION_CHANNEL_ID)
+        if target is None:
+            target = await guild.fetch_channel(EVENT_APPLICATION_CHANNEL_ID)
+        if not isinstance(target, discord.TextChannel):
+            print("[tickets] EVENT_APPLICATION_CHANNEL_ID precisa ser um canal de texto.")
+            return False
+
+        embed = discord.Embed(
+            title="Nova inscrição — Campeonato The Box",
+            color=COR,
+            timestamp=discord.utils.utcnow(),
+        )
+        embed.add_field(
+            name="Participante",
+            value=f"{user.display_name} (`{user.id}`)",
+            inline=False,
+        )
+        embed.add_field(name="Ticket", value=ticket_channel.mention, inline=False)
+        await target.send(
+            embed=embed,
+            allowed_mentions=discord.AllowedMentions.none(),
+        )
+        return True
+    except discord.Forbidden:
+        print("[tickets] Sem permissão para acessar ou avisar o canal de inscrições do campeonato.")
+    except discord.HTTPException as error:
+        print(f"[tickets] Não consegui avisar o canal de inscrições do campeonato: {error}")
+    return False
 
 
 def next_ticket_number() -> str:
@@ -175,6 +274,7 @@ class CloseView(discord.ui.View):
             f"ticket:{member.id}:instagram",
             f"ticket:{member.id}:support",
             f"ticket:{member.id}:staff",
+            f"ticket:{member.id}:campeonato",
         }
         authorized_role_ids = (
             STAFF_APPLICATION_ROLE_IDS
@@ -368,25 +468,53 @@ class SupportView(discord.ui.View):
         )
 
 
+class CampeonatoOpenView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+
+    @discord.ui.button(
+        label="Inscrever-se",
+        emoji="🎟️",
+        style=discord.ButtonStyle.primary,
+        custom_id=ID_OPEN_CAMPEONATO,
+    )
+    async def open_campeonato(
+        self, interaction: discord.Interaction, button: discord.ui.Button
+    ):
+        await create_support_ticket(
+            interaction,
+            "campeonato",
+            "Inscrição — Campeonato The Box",
+            "Envie neste ticket a confirmação de que preencheu o formulário oficial e as "
+            "informações necessárias sobre sua equipe e disponibilidade. A equipe fará a "
+            "verificação dos requisitos antes do início do evento.",
+        )
+
+
 class Tickets(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.panel_task = None
         self.support_panel_task = None
+        self.campeonato_panel_task = None
 
     async def cog_load(self):
         self.bot.add_view(OpenView())
         self.bot.add_view(InstagramOpenView())
         self.bot.add_view(SupportView())
+        self.bot.add_view(CampeonatoOpenView())
         self.bot.add_view(CloseView())
         self.panel_task = asyncio.create_task(self.ensure_instagram_panel())
         self.support_panel_task = asyncio.create_task(self.ensure_support_panel())
+        self.campeonato_panel_task = asyncio.create_task(self.ensure_campeonato_panel())
 
     async def cog_unload(self):
         if self.panel_task:
             self.panel_task.cancel()
         if self.support_panel_task:
             self.support_panel_task.cancel()
+        if self.campeonato_panel_task:
+            self.campeonato_panel_task.cancel()
 
     async def ensure_instagram_panel(self):
         await self.bot.wait_until_ready()
@@ -457,6 +585,36 @@ class Tickets(commands.Cog):
             print("[tickets] Sem permissão para ler o histórico ou enviar o painel de suporte.")
         except discord.HTTPException as error:
             print(f"[tickets] Não consegui criar/atualizar o painel de suporte: {error}")
+
+    async def ensure_campeonato_panel(self):
+        await self.bot.wait_until_ready()
+        try:
+            channel = self.bot.get_channel(EVENT_CHANNEL_ID)
+            if channel is None:
+                channel = await self.bot.fetch_channel(EVENT_CHANNEL_ID)
+            if not isinstance(channel, discord.TextChannel):
+                print("[tickets] EVENT_CHANNEL_ID precisa ser um canal de texto.")
+                return
+
+            async for message in channel.history(limit=50):
+                if message.author == self.bot.user and any(
+                    possui_botao_campeonato(component)
+                    for component in message.components
+                ):
+                    await message.edit(
+                        embed=campeonato_panel_embed(),
+                        view=CampeonatoOpenView(),
+                    )
+                    return
+            await channel.send(
+                embed=campeonato_panel_embed(),
+                view=CampeonatoOpenView(),
+                allowed_mentions=discord.AllowedMentions.none(),
+            )
+        except discord.Forbidden:
+            print("[tickets] Sem permissão para ler o histórico ou enviar o painel do campeonato.")
+        except discord.HTTPException as error:
+            print(f"[tickets] Não consegui criar/atualizar o painel do campeonato: {error}")
 
     @app_commands.command(
         name="painel_verificacao_instagram",
