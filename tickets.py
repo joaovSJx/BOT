@@ -34,64 +34,6 @@ ID_CLOSE = "ticket_close"
 COR = discord.Color.from_rgb(43, 45, 49)
 
 
-def campeonato_panel_embed() -> discord.Embed:
-    embed = discord.Embed(
-        title="🏆 CAMPEONATO THE BOX",
-        description="Leia os requisitos e o regulamento antes de se inscrever.",
-        color=COR,
-    )
-    embed.add_field(
-        name="📋 REQUISITOS OBRIGATÓRIOS",
-        value=(
-            "• Preencher completamente o formulário oficial.\n"
-            "• Seguir os canais informados do evento.\n"
-            "• Manter o link do servidor e a etiqueta na bio.\n"
-            "• Formar a equipe previamente e confirmar a disponibilidade de todos.\n"
-            "• Ter disponibilidade para participar ativamente de chamadas de voz.\n"
-            "• Manter participação ativa no servidor."
-        ),
-        inline=False,
-    )
-    embed.add_field(
-        name="📜 REGULAMENTO E PROIBIÇÕES",
-        value=(
-            "• É proibido usar qualquer tipo de trapaça.\n"
-            "• Não remova o link do servidor nem a etiqueta da bio até o encerramento do evento.\n"
-            "• Esteja no canal de voz no horário estabelecido e mantenha a disciplina no uso do microfone.\n"
-            "• Participe da votação para a seleção dos jogos.\n"
-            "• Não serão permitidas substituições de membros, independentemente da justificativa."
-        ),
-        inline=False,
-    )
-    embed.add_field(
-        name="⚠️ AVISO",
-        value=(
-            "O cumprimento de todos os requisitos e regras é indispensável. "
-            "Cada participante será verificado antes do início do evento."
-        ),
-        inline=False,
-    )
-    embed.add_field(
-        name="🎮 COMO VAI FUNCIONAR",
-        value=(
-            "• O evento terá vários minijogos, em formatos individuais e por equipe.\n"
-            "• A fase inicial terá tabela de pontuação, seguida por eliminatórias em grupos.\n"
-            "• Os minijogos serão escolhidos por votação no canal reservado aos participantes.\n"
-            "• O evento contará com transmissão ao vivo e narração oficial."
-        ),
-        inline=False,
-    )
-    embed.add_field(
-        name="🏅 PREMIAÇÃO",
-        value="**R$ 100,00 + 1 mês de Discord Nitro** para o participante eleito MVP.",
-        inline=False,
-    )
-    embed.set_footer(
-        text=f"Para se inscrever, abra um ticket no canal <#{EVENT_SIGNUP_CHANNEL_ID}>."
-    )
-    return embed
-
-
 def campeonato_signup_embed() -> discord.Embed:
     return discord.Embed(
         title="Inscrições para o Campeonato The Box",
@@ -733,7 +675,9 @@ class Tickets(commands.Cog):
         self.bot.add_view(CloseView())
         self.panel_task = asyncio.create_task(self.ensure_instagram_panel())
         self.support_panel_task = asyncio.create_task(self.ensure_support_panel())
-        self.campeonato_panel_task = asyncio.create_task(self.ensure_campeonato_panel())
+        self.campeonato_panel_task = asyncio.create_task(
+            self.remove_duplicate_campeonato_panel()
+        )
         self.campeonato_signup_panel_task = asyncio.create_task(
             self.ensure_campeonato_signup_panel()
         )
@@ -959,7 +903,7 @@ class Tickets(commands.Cog):
         except discord.HTTPException as error:
             print(f"[tickets] Não consegui criar/atualizar o painel de suporte: {error}")
 
-    async def ensure_campeonato_panel(self):
+    async def remove_duplicate_campeonato_panel(self):
         await self.bot.wait_until_ready()
         try:
             channel = self.bot.get_channel(EVENT_CHANNEL_ID)
@@ -977,19 +921,11 @@ class Tickets(commands.Cog):
                         for embed in message.embeds
                     )
                 ):
-                    await message.edit(
-                        embed=campeonato_panel_embed(),
-                        view=None,
-                    )
-                    return
-            await channel.send(
-                embed=campeonato_panel_embed(),
-                allowed_mentions=discord.AllowedMentions.none(),
-            )
+                    await message.delete()
         except discord.Forbidden:
-            print("[tickets] Sem permissão para ler o histórico ou enviar o painel do campeonato.")
+            print("[tickets] Sem permissão para remover a cópia automática do painel do campeonato.")
         except discord.HTTPException as error:
-            print(f"[tickets] Não consegui criar/atualizar o painel do campeonato: {error}")
+            print(f"[tickets] Não consegui remover a cópia automática do painel do campeonato: {error}")
 
     async def ensure_campeonato_signup_panel(self):
         await self.bot.wait_until_ready()
