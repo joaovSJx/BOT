@@ -18,6 +18,7 @@ INSTAGRAM_VERIFY_CHANNEL_ID = int(
 SUPPORT_CHANNEL_ID = int(os.getenv("CANAL_SUPORTE_ID", "1548207347753689098"))
 EVENT_CHANNEL_ID = 1555742453791854722
 EVENT_APPLICATION_CHANNEL_ID = 1557914825059860651
+EVENT_SIGNUP_CHANNEL_ID = 1557918667759685783
 SUPPORT_IMAGE_PATH = Path(__file__).parent / "assets" / "SUPORTE.png"
 DENUNCIE_IMAGE_PATH = Path(__file__).parent / "assets" / "DENUNCIE.png"
 COUNTER_FILE = Path(__file__).parent / "ticket-counter.json"
@@ -86,9 +87,20 @@ def campeonato_panel_embed() -> discord.Embed:
         inline=False,
     )
     embed.set_footer(
-        text="Clique em Inscrever-se para abrir seu ticket. A equipe receberá o link no canal reservado."
+        text=f"Para se inscrever, abra um ticket no canal <#{EVENT_SIGNUP_CHANNEL_ID}>."
     )
     return embed
+
+
+def campeonato_signup_embed() -> discord.Embed:
+    return discord.Embed(
+        title="Inscrições para o Campeonato The Box",
+        description=(
+            "Quer participar do campeonato? Clique no botão abaixo para abrir seu ticket "
+            "de inscrição. A equipe vai orientar você por lá."
+        ),
+        color=COR,
+    )
 
 
 def possui_botao_campeonato(component) -> bool:
@@ -561,7 +573,7 @@ class CampeonatoOpenView(discord.ui.View):
     @discord.ui.button(
         label="Inscrever-se",
         emoji=discord.PartialEmoji(name="pureza_i", id=1169319223001092158),
-        style=discord.ButtonStyle.primary,
+        style=discord.ButtonStyle.secondary,
         custom_id=ID_OPEN_CAMPEONATO,
     )
     async def open_campeonato(
@@ -709,6 +721,7 @@ class Tickets(commands.Cog):
         self.panel_task = None
         self.support_panel_task = None
         self.campeonato_panel_task = None
+        self.campeonato_signup_panel_task = None
         self.campeonato_logs_task = None
 
     async def cog_load(self):
@@ -721,6 +734,9 @@ class Tickets(commands.Cog):
         self.panel_task = asyncio.create_task(self.ensure_instagram_panel())
         self.support_panel_task = asyncio.create_task(self.ensure_support_panel())
         self.campeonato_panel_task = asyncio.create_task(self.ensure_campeonato_panel())
+        self.campeonato_signup_panel_task = asyncio.create_task(
+            self.ensure_campeonato_signup_panel()
+        )
         self.campeonato_logs_task = asyncio.create_task(
             self.ensure_campeonato_application_logs()
         )
@@ -732,6 +748,8 @@ class Tickets(commands.Cog):
             self.support_panel_task.cancel()
         if self.campeonato_panel_task:
             self.campeonato_panel_task.cancel()
+        if self.campeonato_signup_panel_task:
+            self.campeonato_signup_panel_task.cancel()
         if self.campeonato_logs_task:
             self.campeonato_logs_task.cancel()
 
@@ -952,24 +970,57 @@ class Tickets(commands.Cog):
                 return
 
             async for message in channel.history(limit=50):
-                if message.author == self.bot.user and any(
-                    possui_botao_campeonato(component)
-                    for component in message.components
+                if (
+                    message.author == self.bot.user
+                    and any(
+                        embed.title == "🏆 CAMPEONATO THE BOX"
+                        for embed in message.embeds
+                    )
                 ):
                     await message.edit(
                         embed=campeonato_panel_embed(),
-                        view=CampeonatoOpenView(),
+                        view=None,
                     )
                     return
             await channel.send(
                 embed=campeonato_panel_embed(),
-                view=CampeonatoOpenView(),
                 allowed_mentions=discord.AllowedMentions.none(),
             )
         except discord.Forbidden:
             print("[tickets] Sem permissão para ler o histórico ou enviar o painel do campeonato.")
         except discord.HTTPException as error:
             print(f"[tickets] Não consegui criar/atualizar o painel do campeonato: {error}")
+
+    async def ensure_campeonato_signup_panel(self):
+        await self.bot.wait_until_ready()
+        try:
+            channel = self.bot.get_channel(EVENT_SIGNUP_CHANNEL_ID)
+            if channel is None:
+                channel = await self.bot.fetch_channel(EVENT_SIGNUP_CHANNEL_ID)
+            if not isinstance(channel, discord.TextChannel):
+                print("[tickets] EVENT_SIGNUP_CHANNEL_ID precisa ser um canal de texto.")
+                return
+
+            async for message in channel.history(limit=50):
+                if message.author == self.bot.user and any(
+                    possui_botao_campeonato(component)
+                    for component in message.components
+                ):
+                    await message.edit(
+                        content=None,
+                        embed=campeonato_signup_embed(),
+                        view=CampeonatoOpenView(),
+                    )
+                    return
+            await channel.send(
+                embed=campeonato_signup_embed(),
+                view=CampeonatoOpenView(),
+                allowed_mentions=discord.AllowedMentions.none(),
+            )
+        except discord.Forbidden:
+            print("[tickets] Sem permissão para ler o histórico ou enviar o painel de inscrição do campeonato.")
+        except discord.HTTPException as error:
+            print(f"[tickets] Não consegui criar/atualizar o painel de inscrição do campeonato: {error}")
 
     @app_commands.command(
         name="painel_verificacao_instagram",
