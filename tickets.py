@@ -27,52 +27,68 @@ ID_OPEN = "ticket_open_denuncia"
 ID_OPEN_INSTAGRAM = "ticket_open_instagram"
 ID_OPEN_SUPPORT = "ticket_open_support"
 ID_OPEN_CAMPEONATO = "ticket_open_campeonato"
+ID_DELETE_CAMPEONATO_APPLICATION = "ticket_delete_campeonato_application"
 ID_APPLY_STAFF = "ticket_apply_staff"
 ID_CLOSE = "ticket_close"
 COR = discord.Color.from_rgb(43, 45, 49)
 
 
 def campeonato_panel_embed() -> discord.Embed:
-    return discord.Embed(
-        title="<:tr_11:1549374249247182971> CAMPEONATO THE BOX",
-        description=(
-            "<:emoji_18:1547470852042530856> <:emoji_14:1547470846237478973> "
-            "<:b_2:1547470823034724444> <:emoji_12:1547470842747818004> "
-            "<:emoji_14:1547470846237478973> <:emoji_25:1548493251449716876>\n"
-            "---\n\n"
-            "### <a:pureza_i:1327091619505246218> "
-            "<:pureza_i:1333172482366242896> REQUISITOS OBRIGATÓRIOS\n"
-            "<:d_seta01:1547470839258157066> Preenchimento completo do formulário oficial.\n"
-            "<:d_seta01:1547470839258157066> Seguir os canais informados do evento.\n"
-            "<:d_seta01:1547470839258157066> Inclusão obrigatória do link do servidor e da etiqueta na bio.\n"
-            "<:d_seta01:1547470839258157066> Constituição prévia de equipes com disponibilidade confirmada.\n"
-            "<:d_seta01:1547470839258157066> Disponibilidade para participação ativa em chamada de voz.\n"
-            "<:d_seta01:1547470839258157066> Manter participação ativa no servidor.\n\n"
-            "---\n\n"
-            "### <a:pureza_i:1327091636085461134> "
-            "<:pureza_i:1333172482366242896> REGULAMENTO E PROIBIÇÕES\n"
-            "<:d_seta01:1547470839258157066> Estritamente proibido o uso de qualquer tipo de trapaça.\n"
-            "<:d_seta01:1547470839258157066> É proibido remover o link do servidor e a etiqueta da bio até ao encerramento do evento.\n"
-            "<:d_seta01:1547470839258157066> É obrigatória a presença no canal de voz no horário estabelecido, mantendo a disciplina de uso do microfone.\n"
-            "<:d_seta01:1547470839258157066> É obrigatória a participação no processo de votação para a seleção dos jogos.\n"
-            "<:d_seta01:1547470839258157066> Não serão permitidas substituições de membros, independentemente da justificativa apresentada.\n\n"
-            "> **AVISO:** O cumprimento de todos os requisitos e regras é indispensável. "
-            "Será realizada uma verificação individual de cada participante previamente ao início do evento.\n\n"
-            "---\n\n"
-            "### <a:pureza_i:1327091661289029685> "
-            "<:pureza_i:1333172482366242896> DINÂMICA DE FUNCIONAMENTO\n"
-            "<:d_seta01:1547470839258157066> O evento será composto por múltiplos minijogos, disputados em formatos individual e em equipe.\n"
-            "<:d_seta01:1547470839258157066> Fase inicial com tabela de pontuação, seguida de uma fase eliminatória por grupos.\n"
-            "<:d_seta01:1547470839258157066> A escolha dos minijogos será definida via votação direta no canal reservado aos participantes.\n"
-            "<:d_seta01:1547470839258157066> O evento contará com transmissão ao vivo e narração oficial.\n\n"
-            "---\n\n"
-            "### <a:pureza_i:1241818474918056102> PREMIAÇÃO FINAL\n"
-            "**R$ 100,00** + **1 Mês de Discord Nitro** para o participante que ganhar MVP.\n\n"
-            "Clique no botão abaixo para abrir seu ticket de inscrição. "
-            "A equipe receberá o link do ticket no canal reservado."
-        ),
+    embed = discord.Embed(
+        title="🏆 CAMPEONATO THE BOX",
+        description="Leia os requisitos e o regulamento antes de se inscrever.",
         color=COR,
     )
+    embed.add_field(
+        name="📋 REQUISITOS OBRIGATÓRIOS",
+        value=(
+            "• Preencher completamente o formulário oficial.\n"
+            "• Seguir os canais informados do evento.\n"
+            "• Manter o link do servidor e a etiqueta na bio.\n"
+            "• Formar a equipe previamente e confirmar a disponibilidade de todos.\n"
+            "• Ter disponibilidade para participar ativamente de chamadas de voz.\n"
+            "• Manter participação ativa no servidor."
+        ),
+        inline=False,
+    )
+    embed.add_field(
+        name="📜 REGULAMENTO E PROIBIÇÕES",
+        value=(
+            "• É proibido usar qualquer tipo de trapaça.\n"
+            "• Não remova o link do servidor nem a etiqueta da bio até o encerramento do evento.\n"
+            "• Esteja no canal de voz no horário estabelecido e mantenha a disciplina no uso do microfone.\n"
+            "• Participe da votação para a seleção dos jogos.\n"
+            "• Não serão permitidas substituições de membros, independentemente da justificativa."
+        ),
+        inline=False,
+    )
+    embed.add_field(
+        name="⚠️ AVISO",
+        value=(
+            "O cumprimento de todos os requisitos e regras é indispensável. "
+            "Cada participante será verificado antes do início do evento."
+        ),
+        inline=False,
+    )
+    embed.add_field(
+        name="🎮 COMO VAI FUNCIONAR",
+        value=(
+            "• O evento terá vários minijogos, em formatos individuais e por equipe.\n"
+            "• A fase inicial terá tabela de pontuação, seguida por eliminatórias em grupos.\n"
+            "• Os minijogos serão escolhidos por votação no canal reservado aos participantes.\n"
+            "• O evento contará com transmissão ao vivo e narração oficial."
+        ),
+        inline=False,
+    )
+    embed.add_field(
+        name="🏅 PREMIAÇÃO",
+        value="**R$ 100,00 + 1 mês de Discord Nitro** para o participante eleito MVP.",
+        inline=False,
+    )
+    embed.set_footer(
+        text="Clique em Inscrever-se para abrir seu ticket. A equipe receberá o link no canal reservado."
+    )
+    return embed
 
 
 def possui_botao_campeonato(component) -> bool:
@@ -81,6 +97,47 @@ def possui_botao_campeonato(component) -> bool:
     return any(
         possui_botao_campeonato(child)
         for child in getattr(component, "children", ())
+    )
+
+
+def campo_embed(embed: discord.Embed, name: str) -> str:
+    return next((field.value for field in embed.fields if field.name == name), "")
+
+
+def participante_id_da_inscricao(embed: discord.Embed) -> int | None:
+    participant = campo_embed(embed, "Participante")
+    if "(" not in participant:
+        return None
+    value = participant.rsplit("(", 1)[1].strip("`)")
+    return int(value) if value.isdecimal() else None
+
+
+def embed_mensagem_participante(message: discord.Message) -> discord.Embed:
+    embed = discord.Embed(
+        title="Mensagem do participante",
+        description=message.content or "Mensagem sem texto.",
+        color=COR,
+        timestamp=message.created_at,
+    )
+    embed.set_author(
+        name=f"{message.author.display_name} ({message.author.id})",
+        icon_url=message.author.display_avatar.url,
+    )
+    for index, attachment in enumerate(message.attachments, start=1):
+        embed.add_field(
+            name=f"Anexo {index}",
+            value=attachment.url,
+            inline=False,
+        )
+    return embed
+
+
+async def copiar_mensagem_participante(
+    message: discord.Message, thread: discord.Thread
+):
+    await thread.send(
+        embed=embed_mensagem_participante(message),
+        allowed_mentions=discord.AllowedMentions.none(),
     )
 
 
@@ -139,7 +196,19 @@ async def create_support_ticket(
         )
 
     topic = f"ticket:{user.id}:{ticket_type}"
-    existing = discord.utils.get(guild.text_channels, topic=topic)
+    existing = next(
+        (
+            channel
+            for channel in guild.text_channels
+            if channel.topic == topic
+            or (
+                ticket_type == "campeonato"
+                and channel.topic
+                and channel.topic.startswith(f"{topic}:log:")
+            )
+        ),
+        None,
+    )
     if existing:
         return await interaction.response.send_message(
             f"Você já tem uma solicitação aberta: {existing.mention}", ephemeral=True
@@ -187,7 +256,10 @@ async def create_support_ticket(
     )
     notification_sent = True
     if ticket_type == "campeonato":
-        notification_sent = await notify_event_application(guild, user, channel)
+        application_thread = await notify_event_application(guild, user, channel)
+        notification_sent = application_thread is not None
+        if application_thread is not None:
+            await channel.edit(topic=f"{topic}:log:{application_thread.id}")
 
     confirmation = f"Sua solicitação foi criada: {channel.mention}"
     if not notification_sent:
@@ -206,14 +278,14 @@ async def create_support_ticket(
 
 async def notify_event_application(
     guild: discord.Guild, user: discord.Member, ticket_channel: discord.TextChannel
-) -> bool:
+) -> discord.Thread | None:
     try:
         target = guild.get_channel(EVENT_APPLICATION_CHANNEL_ID)
         if target is None:
             target = await guild.fetch_channel(EVENT_APPLICATION_CHANNEL_ID)
         if not isinstance(target, discord.TextChannel):
             print("[tickets] EVENT_APPLICATION_CHANNEL_ID precisa ser um canal de texto.")
-            return False
+            return None
 
         embed = discord.Embed(
             title="Nova inscrição — Campeonato The Box",
@@ -226,16 +298,27 @@ async def notify_event_application(
             inline=False,
         )
         embed.add_field(name="Ticket", value=ticket_channel.mention, inline=False)
-        await target.send(
+        log_message = await target.send(
             embed=embed,
+            view=DeleteCampeonatoApplicationView(),
             allowed_mentions=discord.AllowedMentions.none(),
         )
-        return True
+        thread = await log_message.create_thread(
+            name=f"Inscrição - {user.display_name}"[:100],
+            auto_archive_duration=10080,
+        )
+        embed.add_field(name="Acompanhamento", value=thread.mention, inline=False)
+        await log_message.edit(embed=embed)
+        await thread.send(
+            "As mensagens e anexos enviados pelo participante no ticket serão registrados aqui.",
+            allowed_mentions=discord.AllowedMentions.none(),
+        )
+        return thread
     except discord.Forbidden:
-        print("[tickets] Sem permissão para acessar ou avisar o canal de inscrições do campeonato.")
+        print("[tickets] Sem permissão para criar a inscrição ou seu tópico de acompanhamento.")
     except discord.HTTPException as error:
-        print(f"[tickets] Não consegui avisar o canal de inscrições do campeonato: {error}")
-    return False
+        print(f"[tickets] Não consegui criar a inscrição ou seu tópico de acompanhamento: {error}")
+    return None
 
 
 def next_ticket_number() -> str:
@@ -275,7 +358,10 @@ class CloseView(discord.ui.View):
             f"ticket:{member.id}:support",
             f"ticket:{member.id}:staff",
             f"ticket:{member.id}:campeonato",
-        }
+        } or (
+            channel.topic
+            and channel.topic.startswith(f"ticket:{member.id}:campeonato:log:")
+        )
         authorized_role_ids = (
             STAFF_APPLICATION_ROLE_IDS
             if channel.topic and channel.topic.endswith(":staff")
@@ -474,7 +560,7 @@ class CampeonatoOpenView(discord.ui.View):
 
     @discord.ui.button(
         label="Inscrever-se",
-        emoji="🎟️",
+        emoji=discord.PartialEmoji(name="pureza_i", id=1169319223001092158),
         style=discord.ButtonStyle.primary,
         custom_id=ID_OPEN_CAMPEONATO,
     )
@@ -491,22 +577,153 @@ class CampeonatoOpenView(discord.ui.View):
         )
 
 
+class DeleteCampeonatoApplicationView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+
+    @discord.ui.button(
+        label="Remover participante",
+        emoji="🗑️",
+        style=discord.ButtonStyle.danger,
+        custom_id=ID_DELETE_CAMPEONATO_APPLICATION,
+    )
+    async def delete_application(
+        self, interaction: discord.Interaction, button: discord.ui.Button
+    ):
+        guild = interaction.guild
+        member = interaction.user
+        if guild is None or not isinstance(member, discord.Member):
+            return await interaction.response.send_message(
+                "Esta ação só pode ser usada dentro do servidor.", ephemeral=True
+            )
+
+        is_staff = member.guild_permissions.manage_channels or any(
+            role.id == STAFF_ROLE_ID for role in member.roles
+        )
+        if not is_staff:
+            return await interaction.response.send_message(
+                "Você não tem permissão para remover participantes.", ephemeral=True
+            )
+
+        log_message = interaction.message
+        if (
+            interaction.client.user is None
+            or log_message.author.id != interaction.client.user.id
+        ):
+            return await interaction.response.send_message(
+                "Esta mensagem de inscrição não é válida.", ephemeral=True
+            )
+        ticket_field = next(
+            (
+                field.value
+                for field in (log_message.embeds[0].fields if log_message.embeds else ())
+                if field.name == "Ticket"
+            ),
+            "",
+        )
+        ticket_id_value = ticket_field[2:-1] if (
+            ticket_field.startswith("<#") and ticket_field.endswith(">")
+        ) else ""
+        if not ticket_id_value.isdecimal():
+            return await interaction.response.send_message(
+                "Não encontrei o ticket relacionado a esta inscrição.", ephemeral=True
+            )
+
+        if (
+            not log_message.embeds
+            or log_message.embeds[0].title != "Nova inscrição — Campeonato The Box"
+        ):
+            return await interaction.response.send_message(
+                "Esta mensagem não é um registro de inscrição válido.", ephemeral=True
+            )
+
+        ticket_id = int(ticket_id_value)
+        ticket_channel = guild.get_channel(ticket_id)
+        if ticket_channel is None:
+            try:
+                fetched_channel = await guild.fetch_channel(ticket_id)
+            except discord.NotFound:
+                fetched_channel = None
+            except discord.HTTPException as error:
+                print(f"[tickets] Não consegui localizar o ticket da inscrição: {error}")
+                return await interaction.response.send_message(
+                    "Não consegui acessar o ticket. A inscrição não foi removida.",
+                    ephemeral=True,
+                )
+            ticket_channel = fetched_channel
+
+        thread_field = next(
+            (
+                field.value
+                for field in log_message.embeds[0].fields
+                if field.name == "Acompanhamento"
+            ),
+            "",
+        )
+        thread_id_value = thread_field[2:-1] if (
+            thread_field.startswith("<#") and thread_field.endswith(">")
+        ) else ""
+        thread_id = int(thread_id_value) if thread_id_value.isdecimal() else None
+        if ticket_channel is not None and (
+            not isinstance(ticket_channel, discord.TextChannel)
+            or not ticket_channel.topic
+            or ":campeonato:log:" not in ticket_channel.topic
+        ):
+            return await interaction.response.send_message(
+                "O canal associado não é um ticket de inscrição válido.",
+                ephemeral=True,
+            )
+
+        await interaction.response.defer(ephemeral=True)
+        try:
+            if isinstance(ticket_channel, discord.TextChannel):
+                await ticket_channel.delete(
+                    reason=f"Inscrição removida por {member} ({member.id})"
+                )
+            thread = guild.get_thread(thread_id) if thread_id is not None else None
+            if thread is None and thread_id is not None:
+                try:
+                    fetched_thread = await guild.fetch_channel(thread_id)
+                except discord.NotFound:
+                    fetched_thread = None
+                if isinstance(fetched_thread, discord.Thread):
+                    thread = fetched_thread
+            if thread is not None:
+                await thread.delete(reason=f"Inscrição removida por {member} ({member.id})")
+            await log_message.delete()
+        except discord.HTTPException as error:
+            print(f"[tickets] Não consegui remover a inscrição do campeonato: {error}")
+            return await interaction.followup.send(
+                "Ocorreu um erro ao remover a inscrição. Verifique as permissões do bot.",
+                ephemeral=True,
+            )
+
+        await interaction.followup.send(
+            "Inscrição removida e ticket apagado.", ephemeral=True
+        )
+
+
 class Tickets(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.panel_task = None
         self.support_panel_task = None
         self.campeonato_panel_task = None
+        self.campeonato_logs_task = None
 
     async def cog_load(self):
         self.bot.add_view(OpenView())
         self.bot.add_view(InstagramOpenView())
         self.bot.add_view(SupportView())
         self.bot.add_view(CampeonatoOpenView())
+        self.bot.add_view(DeleteCampeonatoApplicationView())
         self.bot.add_view(CloseView())
         self.panel_task = asyncio.create_task(self.ensure_instagram_panel())
         self.support_panel_task = asyncio.create_task(self.ensure_support_panel())
         self.campeonato_panel_task = asyncio.create_task(self.ensure_campeonato_panel())
+        self.campeonato_logs_task = asyncio.create_task(
+            self.ensure_campeonato_application_logs()
+        )
 
     async def cog_unload(self):
         if self.panel_task:
@@ -515,6 +732,144 @@ class Tickets(commands.Cog):
             self.support_panel_task.cancel()
         if self.campeonato_panel_task:
             self.campeonato_panel_task.cancel()
+        if self.campeonato_logs_task:
+            self.campeonato_logs_task.cancel()
+
+    @commands.Cog.listener()
+    async def on_message(self, message: discord.Message):
+        if message.author.bot or message.guild is None:
+            return
+        if not isinstance(message.channel, discord.TextChannel):
+            return
+
+        topic = message.channel.topic or ""
+        parts = topic.split(":")
+        if (
+            len(parts) != 5
+            or parts[:3] != ["ticket", str(message.author.id), "campeonato"]
+            or parts[3] != "log"
+        ):
+            return
+
+        thread = self.bot.get_channel(int(parts[4]))
+        if thread is None:
+            try:
+                thread = await self.bot.fetch_channel(int(parts[4]))
+            except discord.HTTPException as error:
+                print(f"[tickets] Não consegui localizar o tópico da inscrição: {error}")
+                return
+        if not isinstance(thread, discord.Thread):
+            print("[tickets] O tópico de acompanhamento da inscrição não é um thread válido.")
+            return
+
+        await copiar_mensagem_participante(message, thread)
+
+    async def ensure_campeonato_application_logs(self):
+        await self.bot.wait_until_ready()
+        try:
+            channel = self.bot.get_channel(EVENT_APPLICATION_CHANNEL_ID)
+            if channel is None:
+                channel = await self.bot.fetch_channel(EVENT_APPLICATION_CHANNEL_ID)
+            if not isinstance(channel, discord.TextChannel):
+                print("[tickets] EVENT_APPLICATION_CHANNEL_ID precisa ser um canal de texto.")
+                return
+
+            async for log_message in channel.history(limit=100):
+                if (
+                    log_message.author != self.bot.user
+                    or not log_message.embeds
+                    or log_message.embeds[0].title
+                    != "Nova inscrição — Campeonato The Box"
+                ):
+                    continue
+
+                embed = log_message.embeds[0].copy()
+                participant_id = participante_id_da_inscricao(embed)
+                ticket_value = campo_embed(embed, "Ticket")
+                ticket_value = (
+                    ticket_value[2:-1]
+                    if ticket_value.startswith("<#") and ticket_value.endswith(">")
+                    else ""
+                )
+                ticket_channel = None
+                if ticket_value.isdecimal():
+                    ticket_channel = self.bot.get_channel(int(ticket_value))
+                    if ticket_channel is None:
+                        try:
+                            ticket_channel = await self.bot.fetch_channel(int(ticket_value))
+                        except discord.NotFound:
+                            ticket_channel = None
+
+                if not isinstance(ticket_channel, discord.TextChannel):
+                    await log_message.edit(view=DeleteCampeonatoApplicationView())
+                    continue
+                if participant_id is None:
+                    topic_parts = (ticket_channel.topic or "").split(":")
+                    if len(topic_parts) >= 3 and topic_parts[0] == "ticket":
+                        participant_id = int(topic_parts[1]) if topic_parts[1].isdecimal() else None
+                if participant_id is None:
+                    print(f"[tickets] Não consegui identificar o participante em {log_message.id}.")
+                    continue
+
+                ticket_prefix = f"ticket:{participant_id}:campeonato"
+                ticket_topic = ticket_channel.topic or ""
+                if ticket_topic != ticket_prefix and not ticket_topic.startswith(
+                    f"{ticket_prefix}:log:"
+                ):
+                    await log_message.edit(view=DeleteCampeonatoApplicationView())
+                    continue
+
+                thread_field = campo_embed(embed, "Acompanhamento")
+                thread_value = (
+                    thread_field[2:-1]
+                    if thread_field.startswith("<#") and thread_field.endswith(">")
+                    else ""
+                )
+                thread = None
+                if thread_value.isdecimal():
+                    candidate = self.bot.get_channel(int(thread_value))
+                    if isinstance(candidate, discord.Thread):
+                        thread = candidate
+                if thread is None and ticket_channel.topic and ":log:" in ticket_channel.topic:
+                    thread_id_value = ticket_channel.topic.rsplit(":log:", 1)[1]
+                    if thread_id_value.isdecimal():
+                        candidate = self.bot.get_channel(int(thread_id_value))
+                        if candidate is None:
+                            try:
+                                candidate = await self.bot.fetch_channel(int(thread_id_value))
+                            except discord.NotFound:
+                                candidate = None
+                        if isinstance(candidate, discord.Thread):
+                            thread = candidate
+                if thread is None:
+                    thread = log_message.thread
+                if thread is None:
+                    thread = await log_message.create_thread(
+                        name=f"Inscrição - {ticket_channel.name}"[:100],
+                        auto_archive_duration=10080,
+                    )
+
+                has_thread_field = any(
+                    field.name == "Acompanhamento" for field in embed.fields
+                )
+                if not has_thread_field:
+                    async for ticket_message in ticket_channel.history(oldest_first=True):
+                        if ticket_message.author.id == participant_id:
+                            await copiar_mensagem_participante(ticket_message, thread)
+                    embed.add_field(
+                        name="Acompanhamento", value=thread.mention, inline=False
+                    )
+
+                await log_message.edit(
+                    embed=embed,
+                    view=DeleteCampeonatoApplicationView(),
+                )
+                if ticket_channel.topic != f"{ticket_prefix}:log:{thread.id}":
+                    await ticket_channel.edit(topic=f"{ticket_prefix}:log:{thread.id}")
+        except discord.Forbidden:
+            print("[tickets] Sem permissão para atualizar os registros de inscrição do campeonato.")
+        except discord.HTTPException as error:
+            print(f"[tickets] Não consegui atualizar os registros de inscrição: {error}")
 
     async def ensure_instagram_panel(self):
         await self.bot.wait_until_ready()
